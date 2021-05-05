@@ -1,6 +1,7 @@
 package it.marczuk.restapicar.model;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;

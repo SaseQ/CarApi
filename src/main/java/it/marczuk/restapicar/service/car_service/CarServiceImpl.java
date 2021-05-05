@@ -6,7 +6,9 @@ import it.marczuk.restapicar.model.dto.CarDtoMapper;
 import it.marczuk.restapicar.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,13 +21,13 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
 
     @Override
-    public List<CarDto> getAllCars(int page) {
-        return CarDtoMapper.mapToCarDtos(carRepository.findAllCars(PageRequest.of(page, PAGE_SIZE)));
+    public List<CarDto> getAllCars(int page, Sort.Direction sort) {
+        return CarDtoMapper.mapToCarDtos(carRepository.findAllCars(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id"))));
     }
 
     @Override
-    public List<Car> getAllCarsWithEngines(int page) {
-        return carRepository.findAllCars(PageRequest.of(page, PAGE_SIZE));
+    public List<Car> getAllCarsWithEngines(int page, Sort.Direction sort) {
+        return carRepository.findAllCars(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
     }
 
     @Override
@@ -37,5 +39,26 @@ public class CarServiceImpl implements CarService {
     public Car getCarWithEngineById(Long id) {
         return carRepository.findById(id)
                 .orElseThrow();
+    }
+
+    @Override
+    public Car addCar(Car car) {
+        return carRepository.save(car);
+    }
+
+    @Override
+    @Transactional
+    public Car editCar(Car car) {
+        Car carEdited = carRepository.findById(car.getId()).orElseThrow();
+        carEdited.setMark(car.getMark());
+        carEdited.setModel(car.getModel());
+        carEdited.setColor(car.getColor());
+        carEdited.setProductionDate(car.getProductionDate());
+        return carEdited;
+    }
+
+    @Override
+    public void deleteCar(Long id) {
+        carRepository.deleteById(id);
     }
 }

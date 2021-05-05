@@ -7,10 +7,8 @@ import it.marczuk.restapicar.model.dto.CarDto;
 import it.marczuk.restapicar.service.car_service.CarService;
 import it.marczuk.restapicar.service.engine_service.EngineService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,15 +20,13 @@ public class CarController {
     private final EngineService engineService;
 
     @GetMapping("/cars")
-    public List<CarDto> getCars(@RequestParam(required = false) Integer page) {
-        int pageTO = page != null && page > 0 ? page-1 : 0;
-        return carService.getAllCars(pageTO);
+    public List<CarDto> getCars(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+        return carService.getAllCars(covertPage(page), setSortType(sort));
     }
 
     @GetMapping("/cars/engines")
-    public List<Car> getCarsWithEngines(@RequestParam(required = false) Integer page) {
-        int pageTO = page != null && page > 0 ? page-1 : 0;
-        return carService.getAllCarsWithEngines(pageTO);
+    public List<Car> getCarsWithEngines(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+        return carService.getAllCarsWithEngines(covertPage(page), setSortType(sort));
     }
 
     @GetMapping("/cars/{id}")
@@ -40,17 +36,48 @@ public class CarController {
 
     @GetMapping("/cars/engines/{id}")
     public Car getSingleCarWithEngine(@PathVariable Long id) {
-//        throw new IllegalArgumentException("Note implemented yet!");
         return carService.getCarWithEngineById(id);
     }
 
     @GetMapping("/engines")
-    public List<Engine> getEngines() {
-        return engineService.getAllEngines();
+    public List<Engine> getEngines(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+        return engineService.getAllEngines(covertPage(page), setSortType(sort));
     }
 
     @GetMapping("/engines/{id}")
     public Engine getSingleEngine(@PathVariable Long id) {
         return engineService.getEngineById(id);
+    }
+
+    @PostMapping("/cars")
+    public Car addCar(@RequestBody Car car) {
+        engineService.addEngine(car.getEngine());
+        return carService.addCar(car);
+    }
+
+    @PutMapping("/cars")
+    public Car editCar(@RequestBody Car car) {
+        if (car.getEngine() != null) {
+            engineService.editEngine(car.getEngine());
+        }
+        return carService.editCar(car);
+    }
+
+    @PatchMapping("/cars")
+    public Car editCarElement() {
+        throw new IllegalArgumentException("Note implemented yet!");
+    }
+
+    @DeleteMapping("/cars/{id}")
+    public void deleteCar(@PathVariable Long id) {
+        carService.deleteCar(id);
+    }
+
+    private int covertPage(Integer page) {
+        return page != null && page > 0 ? page - 1 : 0;
+    }
+
+    private Sort.Direction setSortType(Sort.Direction sort) {
+        return sort == null ? Sort.Direction.ASC : sort;
     }
 }
