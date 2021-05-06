@@ -1,6 +1,8 @@
 package it.marczuk.restapicar.service.engine_service;
 
 import it.marczuk.restapicar.model.Engine;
+import it.marczuk.restapicar.model.dto.engine_dto.EngineDto;
+import it.marczuk.restapicar.model.dto.engine_dto.EngineDtoMapper;
 import it.marczuk.restapicar.repository.EngineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -19,12 +21,22 @@ public class EngineServiceImpl implements EngineService {
     private final EngineRepository engineRepository;
 
     @Override
-    public List<Engine> getAllEngines(int page, Sort.Direction sort) {
+    public List<EngineDto> getAllEngines(int page, Sort.Direction sort) {
+        return EngineDtoMapper.mapToEngineDtos(engineRepository.findAllEngines(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id"))));
+    }
+
+    @Override
+    public List<Engine> getAllEnginesWithCars(int page, Sort.Direction sort) {
         return engineRepository.findAllEngines(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
     }
 
     @Override
-    public Engine getEngineById(Long id) {
+    public EngineDto getEngineById(Long id) {
+        return EngineDtoMapper.mapToEngineDtos(List.of(engineRepository.findById(id).orElseThrow())).get(0);
+    }
+
+    @Override
+    public Engine getEngineWithCarsById(Long id) {
         return engineRepository.findById(id)
                 .orElseThrow();
     }
@@ -42,5 +54,10 @@ public class EngineServiceImpl implements EngineService {
         engineEdited.setEngineType(engine.getEngineType());
         engineEdited.setProductionDate(engine.getProductionDate());
         return engineEdited;
+    }
+
+    @Override
+    public void deleteEngine(Long id) {
+        engineRepository.deleteById(id);
     }
 }

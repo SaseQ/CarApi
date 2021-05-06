@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface EngineRepository extends JpaRepository<Engine, Long> {
 
-    @Query("select e from engines e")
+    @Query("select e from engines e" +
+            " left join fetch e.car")
     List<Engine> findAllEngines(Pageable page);
 }

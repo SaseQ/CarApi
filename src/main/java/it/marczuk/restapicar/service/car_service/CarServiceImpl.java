@@ -1,8 +1,8 @@
 package it.marczuk.restapicar.service.car_service;
 
 import it.marczuk.restapicar.model.Car;
-import it.marczuk.restapicar.model.dto.CarDto;
-import it.marczuk.restapicar.model.dto.CarDtoMapper;
+import it.marczuk.restapicar.model.dto.car_dto.CarDto;
+import it.marczuk.restapicar.model.dto.car_dto.CarDtoMapper;
 import it.marczuk.restapicar.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

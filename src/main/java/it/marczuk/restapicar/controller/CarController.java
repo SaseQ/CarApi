@@ -3,7 +3,8 @@ package it.marczuk.restapicar.controller;
 
 import it.marczuk.restapicar.model.Car;
 import it.marczuk.restapicar.model.Engine;
-import it.marczuk.restapicar.model.dto.CarDto;
+import it.marczuk.restapicar.model.dto.car_dto.CarDto;
+import it.marczuk.restapicar.model.dto.engine_dto.EngineDto;
 import it.marczuk.restapicar.service.car_service.CarService;
 import it.marczuk.restapicar.service.engine_service.EngineService;
 import lombok.RequiredArgsConstructor;
@@ -40,13 +41,23 @@ public class CarController {
     }
 
     @GetMapping("/engines")
-    public List<Engine> getEngines(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+    public List<EngineDto> getEngines(@RequestParam(required = false) Integer page, Sort.Direction sort) {
         return engineService.getAllEngines(covertPage(page), setSortType(sort));
     }
 
+    @GetMapping("/engines/cars")
+    public List<Engine> getEnginesWithCars(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+        return engineService.getAllEnginesWithCars(covertPage(page), setSortType(sort));
+    }
+
     @GetMapping("/engines/{id}")
-    public Engine getSingleEngine(@PathVariable Long id) {
+    public EngineDto getSingleEngine(@PathVariable Long id) {
         return engineService.getEngineById(id);
+    }
+
+    @GetMapping("/engines/cars/{id}")
+    public Engine getSingleEngineWithCars(@PathVariable Long id) {
+        return engineService.getEngineWithCarsById(id);
     }
 
     @PostMapping("/cars")
@@ -71,6 +82,11 @@ public class CarController {
     @DeleteMapping("/cars/{id}")
     public void deleteCar(@PathVariable Long id) {
         carService.deleteCar(id);
+    }
+
+    @DeleteMapping("/engine/{id}")
+    public void deleteEngine(@PathVariable Long id) {
+        engineService.deleteEngine(id);
     }
 
     private int covertPage(Integer page) {

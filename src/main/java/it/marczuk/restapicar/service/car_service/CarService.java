@@ -1,11 +1,10 @@
 package it.marczuk.restapicar.service.car_service;
 
 import it.marczuk.restapicar.model.Car;
-import it.marczuk.restapicar.model.dto.CarDto;
+import it.marczuk.restapicar.model.dto.car_dto.CarDto;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CarService {
 

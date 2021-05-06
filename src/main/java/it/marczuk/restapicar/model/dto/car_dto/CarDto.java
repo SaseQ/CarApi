@@ -1,4 +1,4 @@
-package it.marczuk.restapicar.model.dto;
+package it.marczuk.restapicar.model.dto.car_dto;
 
 import it.marczuk.restapicar.model.Color;
 import lombok.Builder;

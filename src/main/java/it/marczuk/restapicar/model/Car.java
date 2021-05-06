@@ -1,5 +1,6 @@
 package it.marczuk.restapicar.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 
@@ -19,6 +20,7 @@ public class Car {
     private String model;
     private Color color;
     private LocalDate productionDate;
-    @OneToOne
+    @ManyToOne
+    @JsonIgnore
     private Engine engine;
 }
