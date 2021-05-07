@@ -19,6 +19,10 @@ public class EngineDtoMapper {
                 .collect(Collectors.toList());
     }
 
+    public static EngineDto mapToEngineDtos(Engine engine) {
+        return mapToEngineDto(engine);
+    }
+
     private static EngineDto mapToEngineDto(Engine engine) {
         return EngineDto.builder()
                 .id(engine.getId())

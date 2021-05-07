@@ -21,24 +21,25 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
 
     @Override
-    public List<CarDto> getAllCars(int page, Sort.Direction sort) {
-        return CarDtoMapper.mapToCarDtos(carRepository.findAllCars(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id"))));
-    }
-
-    @Override
-    public List<Car> getAllCarsWithEngines(int page, Sort.Direction sort) {
+    public List<Car> getAllCars(int page, Sort.Direction sort) {
         return carRepository.findAllCars(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
     }
 
     @Override
-    public CarDto getCarById(Long id) {
-        return CarDtoMapper.mapToCarDtos(List.of(carRepository.findById(id).orElseThrow())).get(0);
+    public List<CarDto> getAllCarsWithEngines(int page, Sort.Direction sort) {
+        return CarDtoMapper.mapToCarDtos(carRepository.findAllCars(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id"))));
     }
 
     @Override
-    public Car getCarWithEngineById(Long id) {
+    public Car getCarById(Long id) {
         return carRepository.findById(id)
                 .orElseThrow();
+    }
+
+    @Override
+    public CarDto getCarWithEngineById(Long id) {
+        return CarDtoMapper.mapToCarDtos(carRepository.findById(id)
+                .orElseThrow());
     }
 
     @Override

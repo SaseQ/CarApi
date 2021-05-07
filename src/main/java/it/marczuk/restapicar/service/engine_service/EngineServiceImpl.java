@@ -32,7 +32,7 @@ public class EngineServiceImpl implements EngineService {
 
     @Override
     public EngineDto getEngineById(Long id) {
-        return EngineDtoMapper.mapToEngineDtos(List.of(engineRepository.findById(id).orElseThrow())).get(0);
+        return EngineDtoMapper.mapToEngineDtos(engineRepository.findById(id).orElseThrow());
     }
 
     @Override

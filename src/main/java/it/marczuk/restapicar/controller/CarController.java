@@ -21,22 +21,42 @@ public class CarController {
     private final EngineService engineService;
 
     @GetMapping("/cars")
-    public List<CarDto> getCars(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+    public List<Car> getCars(@RequestParam(required = false) Integer page, Sort.Direction sort) {
         return carService.getAllCars(covertPage(page), setSortType(sort));
     }
 
-    @GetMapping("/cars/engines")
-    public List<Car> getCarsWithEngines(@RequestParam(required = false) Integer page, Sort.Direction sort) {
-        return carService.getAllCarsWithEngines(covertPage(page), setSortType(sort));
+    @PostMapping("/cars")
+    public Car addCar(@RequestBody Car car) {
+        return carService.addCar(car);
+    }
+
+    @PutMapping("/cars")
+    public Car editCar(@RequestBody Car car) {
+        return carService.editCar(car);
+    }
+
+    @PatchMapping("/cars")
+    public Car editCarElement() {
+        throw new IllegalArgumentException("Not implemented yet!");
     }
 
     @GetMapping("/cars/{id}")
-    public CarDto getSingleCar(@PathVariable Long id) {
+    public Car getSingleCar(@PathVariable Long id) {
         return carService.getCarById(id);
     }
 
+    @DeleteMapping("/cars/{id}")
+    public void deleteCar(@PathVariable Long id) {
+        carService.deleteCar(id);
+    }
+
+    @GetMapping("/cars/engines")
+    public List<CarDto> getCarsWithEngines(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+        return carService.getAllCarsWithEngines(covertPage(page), setSortType(sort));
+    }
+
     @GetMapping("/cars/engines/{id}")
-    public Car getSingleCarWithEngine(@PathVariable Long id) {
+    public CarDto getSingleCarWithEngine(@PathVariable Long id) {
         return carService.getCarWithEngineById(id);
     }
 
@@ -45,9 +65,19 @@ public class CarController {
         return engineService.getAllEngines(covertPage(page), setSortType(sort));
     }
 
-    @GetMapping("/engines/cars")
-    public List<Engine> getEnginesWithCars(@RequestParam(required = false) Integer page, Sort.Direction sort) {
-        return engineService.getAllEnginesWithCars(covertPage(page), setSortType(sort));
+    @PostMapping("/engines")
+    public Engine addEngine(@RequestBody Engine engine) {
+        return engineService.addEngine(engine);
+    }
+
+    @PutMapping("/engines")
+    public Engine editEngine(@RequestBody Engine engine) {
+        return engineService.editEngine(engine);
+    }
+
+    @PatchMapping("/engines")
+    public Engine editEngineElement() {
+        throw new IllegalArgumentException("Not implemented yet!");
     }
 
     @GetMapping("/engines/{id}")
@@ -55,38 +85,19 @@ public class CarController {
         return engineService.getEngineById(id);
     }
 
+    @DeleteMapping("/engines/{id}")
+    public void deleteEngine(@PathVariable Long id) {
+        engineService.deleteEngine(id);
+    }
+
+    @GetMapping("/engines/cars")
+    public List<Engine> getEnginesWithCars(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+        return engineService.getAllEnginesWithCars(covertPage(page), setSortType(sort));
+    }
+
     @GetMapping("/engines/cars/{id}")
     public Engine getSingleEngineWithCars(@PathVariable Long id) {
         return engineService.getEngineWithCarsById(id);
-    }
-
-    @PostMapping("/cars")
-    public Car addCar(@RequestBody Car car) {
-        engineService.addEngine(car.getEngine());
-        return carService.addCar(car);
-    }
-
-    @PutMapping("/cars")
-    public Car editCar(@RequestBody Car car) {
-        if (car.getEngine() != null) {
-            engineService.editEngine(car.getEngine());
-        }
-        return carService.editCar(car);
-    }
-
-    @PatchMapping("/cars")
-    public Car editCarElement() {
-        throw new IllegalArgumentException("Note implemented yet!");
-    }
-
-    @DeleteMapping("/cars/{id}")
-    public void deleteCar(@PathVariable Long id) {
-        carService.deleteCar(id);
-    }
-
-    @DeleteMapping("/engine/{id}")
-    public void deleteEngine(@PathVariable Long id) {
-        engineService.deleteEngine(id);
     }
 
     private int covertPage(Integer page) {

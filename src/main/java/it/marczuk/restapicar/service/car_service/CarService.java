@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface CarService {
 
-    List<CarDto> getAllCars(int page, Sort.Direction sort);
+    List<Car> getAllCars(int page, Sort.Direction sort);
 
-    List<Car> getAllCarsWithEngines(int page, Sort.Direction sort);
+    List<CarDto> getAllCarsWithEngines(int page, Sort.Direction sort);
 
-    CarDto getCarById(Long id);
+    Car getCarById(Long id);
 
-    Car getCarWithEngineById(Long id);
+    CarDto getCarWithEngineById(Long id);
 
     Car addCar(Car car);
 
