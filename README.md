@@ -21,6 +21,7 @@ spring.jpa.hibernate.ddl-auto=create
   <li>Gradle</li>
   <li>Lombok</li>
   <li>Spring Boot 2.4.5</li>
+  <li>Spring Security 2.4.5</li>
   <li>Hibernate JPA 2.4.5</li>
   <li>Swagger 2.9.2</li>
 </ul>
