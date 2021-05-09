@@ -13,6 +13,9 @@ Api return: `json`
 spring.h2.console.enabled=true
 spring.datasource.url=jdbc:h2:mem:testdb
 spring.jpa.hibernate.ddl-auto=create
+
+jwt.expirationTime=
+jwt.secret=
 ```
 
 ## Technologies
